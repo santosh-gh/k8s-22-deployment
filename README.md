@@ -360,7 +360,7 @@ flux --version
 - This creates a single-node Kubernetes cluster inside a Docker container.
 kind create cluster --name flux-demo 
 
-kind create cluster --name=multi-node-cluster --config=./cluster-config/config
+kind create cluster --name flux-demo  --config=./cluster-config/config
 
 docker ps
 
@@ -390,9 +390,12 @@ flux bootstrap github \
 # Flux Sync
 
   kubectl get kustomizations -n flux-system
+  flux get kustomizations
+
 
 # Verify Deployment
 
 kind delete cluster --name demo-cluster
+kind delete cluster --name flux-demo
 
 
