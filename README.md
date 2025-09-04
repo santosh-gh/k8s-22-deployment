@@ -348,7 +348,7 @@ Install Flux CLI
 Install Kubectl
 
 
-
+flux check --pre
 
 kind --version
 flux --version
