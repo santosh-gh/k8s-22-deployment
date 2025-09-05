@@ -164,7 +164,42 @@
             Create Argo CD applications using manifests
             Create Argo CD applications using manifests (CRD - ApplicationSet)
     GitHub:  https://github.com/santosh-gh/k8s-18
-    YouTube: https://www.youtube.com/watch?v=GYMY4ZQ7V9o&list=PLr6ErUeFySVug9VG73_W2MypRez_ZycWh&index=16
+    YouTube: https://www.youtube.com/watch?v=3ppWmlnFP8U&list=PLr6ErUeFySVug9VG73_W2MypRez_ZycWh&index=18
+
+    Part19: ArgoCD (Automate deployment using Azure Pipeline)
+            Create Argo CD applications using manifests
+            Helmchart
+            Automate deployment using Azure Pipeline
+
+    GitHub:  https://github.com/santosh-gh/k8s-19-development.git     
+    GitHub:  https://github.com/santosh-gh/k8s-19-deployment.git
+    YouTube: https://www.youtube.com/watch?v=c6ZZNgKLh6g&list=PLr6ErUeFySVug9VG73_W2MypRez_ZycWh&index=19
+
+    Part20: ArgoCD (Automate deployment using Azure Pipeline)
+            Create Argo CD applications using manifests 
+            CRD - ApplicationSet
+            Helmchart
+            Automate deployment using Azure Pipeline
+
+    GitHub:  https://github.com/santosh-gh/k8s-20-development.git     
+    GitHub:  https://github.com/santosh-gh/k8s-20-deployment.git
+    YouTube: https://www.youtube.com/watch?v=bzCk-tDUlZc&list=PLr6ErUeFySVug9VG73_W2MypRez_ZycWh&index=20
+
+    Part21: ArgoCD (Automate deployment using Azure Pipeline)
+            Create Argo CD applications using manifests 
+            CRD - ApplicationSet
+            Kustomize
+            Automate deployment using Azure Pipeline
+
+    GitHub:  https://github.com/santosh-gh/k8s-21-development.git     
+    GitHub:  https://github.com/santosh-gh/k8s-21-deployment.git
+    YouTube: https://www.youtube.com/watch?v=bzCk-tDUlZc&list=PLr6ErUeFySVug9VG73_W2MypRez_ZycWh&index=20
+
+    Part22: GitOps using Flux (Microservice deployment using Flux, KinD)
+
+    GitHub:  https://github.com/santosh-gh/k8s-21-development.git     
+    GitHub:  https://github.com/santosh-gh/k8s-21-deployment.git
+    YouTube: https://www.youtube.com/watch?v=bzCk-tDUlZc&list=PLr6ErUeFySVug9VG73_W2MypRez_ZycWh&index=20
 
 # Architesture
 
@@ -357,9 +392,31 @@ The Source Controller monitors the source of the Kubernetes manifests (Git, Helm
 
 Creating a GitHub Personal Access Token (PAT)
 
-Install Docker
-Install KinD - https://kind.sigs.k8s.io/docs/user/quick-start/
 
+# Prerequisites
+
+  Install Docker
+
+  Install KinD - https://kind.sigs.k8s.io/docs/user/quick-start/
+
+    kind --version
+
+  Install kubectl
+
+  Install Flux CLI
+
+    Windows:
+    choco install flux
+
+    Mac:
+    brew install fluxcd/tap/flux
+
+    Linux:
+    curl -s https://fluxcd.io/install.sh | sudo bash
+
+    flux --version
+
+  GitHub repo 
 
 # FluxCD Components
 
@@ -376,54 +433,35 @@ Install KinD - https://kind.sigs.k8s.io/docs/user/quick-start/
 
   Notification Controller - handles notifications and alerts for deployments
 
-# Install Flux CLI
-  Windows:
-  choco install flux
-
-  Mac:
-  brew install fluxcd/tap/flux
-
-  Linux:
-  curl -s https://fluxcd.io/install.sh | sudo bash
-
-  flux --version
-
 # FluxCD Prerequisites Check
   flux check --pre
 
-Install Kubectl
-
-
-flux check --pre
-
-kind --version
-flux --version
-
 # Create a KinD cluster
 
-
-
 - This creates a single-node Kubernetes cluster inside a Docker container.
-kind create cluster --name flux-demo 
+  kind create cluster --name flux-demo 
 
-kind create cluster --name flux-demo  --config=./cluster-config/config
+  kind create cluster --name flux-demo  --config=./cluster-config/config
 
-docker ps
+  docker ps
 
-kubectl get nodes
+  kubectl get nodes
 
-kubectl cluster-info
+  kubectl cluster-info
+
+  kubectl cluster-info --context kind-flux-demo
+
 
 # Install Flux in Cluster
 
 # GitHub
-  gh repo create 2048 --public 
+  gh repo create <repo-name> --public 
 
 # Bootstrap Flux in the Cluster
 
   export GITHUB_USER='santosh-gh'
   export GITHUB_REPO='k8s-22-deployment'
-  export GITHUB_TOKEN=<your-token>
+  export GITHUB_TOKEN=<pat-token>
 
   flux bootstrap github \
     --owner=$GITHUB_USER \
@@ -433,12 +471,14 @@ kubectl cluster-info
     --personal=true \
     --private=false
 
-    Use the provided GitHub username and token to authenticate with your repository.
-    Install the Flux components in your Kubernetes cluster.
-    Configure Flux to watch your Git repository for changes and automatically deploy your applications.
+    Create a Git repo 
+
+    Install the Flux components in Kubernetes cluster.
+
+    Configure Flux to reconcile manifests underclusters/flux-demo/
 
 
-  k get all -n flux-system
+    k get all -n flux-system
 
 
 # Setting Up FluxCD to Deploy the Application
@@ -446,7 +486,6 @@ kubectl cluster-info
     # Microservice Manifests
     # Create a Kustomization File
     # Link the Application Directory to FluxCD
-
 
 # Define Flux Kustomization
 
@@ -460,14 +499,11 @@ kubectl cluster-info
   Check Kustomization Status:
   flux get kustomizations -n flux-system
 
-  
-
-
-  https://devtron.ai/blog/what-is-fluxcd/
+  flux get sources git
+  flux get kustomizations
 
   Check that the app was created:
   kubectl get all
-
 
   flux events
 
