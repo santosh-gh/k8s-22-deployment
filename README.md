@@ -360,7 +360,36 @@ Creating a GitHub Personal Access Token (PAT)
 Install Docker
 Install KinD - https://kind.sigs.k8s.io/docs/user/quick-start/
 
-Install Flux CLI
+
+# FluxCD Components
+
+  Flux - the primary operator (control plane), continuously monitoring the Git repository 
+          and applying changes to the Kubernetes cluster.
+
+  Kustomize Controller - supports managing Kubernetes manifests using Kustomize,
+                         also enabling customize the deployments.
+
+  Source Controller - monitors the source of the Kubernetes manifests (Git, Helm repositories, etc.) 
+                      and makes them available for the other controllers.
+
+  Helm Controller - responsible for managing Helm artifacts.
+
+  Notification Controller - handles notifications and alerts for deployments
+
+# Install Flux CLI
+  Windows:
+  choco install flux
+
+  Mac:
+  brew install fluxcd/tap/flux
+
+  Linux:
+  curl -s https://fluxcd.io/install.sh | sudo bash
+
+  flux --version
+
+# FluxCD Prerequisites Check
+  flux check --pre
 
 Install Kubectl
 
@@ -387,22 +416,30 @@ kubectl cluster-info
 
 # Install Flux in Cluster
 
+# GitHub
+  gh repo create 2048 --public 
+
 # Bootstrap Flux in the Cluster
 
-export GITHUB_USER='santosh-gh'
-export GITHUB_REPO='k8s-22-deployment'
-export GITHUB_TOKEN=<your-token>
+  export GITHUB_USER='santosh-gh'
+  export GITHUB_REPO='k8s-22-deployment'
+  export GITHUB_TOKEN=<your-token>
 
-flux bootstrap github \
-  --owner=$GITHUB_USER \
-  --repository=$GITHUB_REPO \
-  --branch=main \
-  --path=clusters/flux-demo \
-  --personal=true \
-  --private=false
+  flux bootstrap github \
+    --owner=$GITHUB_USER \
+    --repository=$GITHUB_REPO \
+    --branch=main \
+    --path=clusters/flux-demo \
+    --personal=true \
+    --private=false
 
-# Verify the Installation:
-   flux check --pre
+    Use the provided GitHub username and token to authenticate with your repository.
+    Install the Flux components in your Kubernetes cluster.
+    Configure Flux to watch your Git repository for changes and automatically deploy your applications.
+
+
+  k get all -n flux-system
+
 
 # Setting Up FluxCD to Deploy the Application
     
@@ -423,11 +460,16 @@ flux bootstrap github \
   Check Kustomization Status:
   flux get kustomizations -n flux-system
 
+  
+
+
+  https://devtron.ai/blog/what-is-fluxcd/
+
   Check that the app was created:
   kubectl get all
 
 
-
+  flux events
 
 # Flux Sync
 
