@@ -1,4 +1,4 @@
-# Part 15: Deploying microservice applications in kubernetes (minikube) using ArgoCD
+# Part 22: Deploying microservice applications in kubernetes (KinD) using FluxCD
 
     Part1:   Manual Deployment (AzCLI + Docker Desktop + kubectl)  
     GitHub:  https://github.com/santosh-gh/k8s-01
