@@ -381,7 +381,8 @@ flux bootstrap github \
   --repository=$GITHUB_REPO \
   --branch=main \
   --path=clusters/flux-demo \
-  --personal
+  --personal=true \
+  --private=false
 
 # Microservice Manifests
 
