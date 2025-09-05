@@ -348,6 +348,7 @@
   flux get kustomizations -n flux-system
 
   flux get kustomizations --watch
+  flux get kustomizations -w
 
   flux get sources git
   flux get kustomizations
