@@ -340,6 +340,23 @@ argocd login localhost:8080 --username admin --password lA2zNg2gO0JwB693 --insec
 kubectl apply -f ./appsets/test.yaml
 kubectl apply -f ./appsets/test.yaml --dry-run=client -o yaml
 
+
+
+Core Components of FluxCD
+Before we dive into the hands-on part, let's briefly discuss the core components of FluxCD:
+
+Flux is the primary operator (control plane), continuously monitoring the Git repository and applying changes to the Kubernetes cluster.
+
+The Helm Controller is a component of FluxCD that allows you to manage Helm charts in a GitOps fashion.
+
+The Kustomize Controller supports managing Kubernetes manifests using Kustomize, enabling you to customize your deployments.
+
+The Notification Controller handles notifications and alerts for your deployments.
+
+The Source Controller monitors the source of the Kubernetes manifests (Git, Helm repositories, etc.) and makes them available for the other controllers.
+
+Creating a GitHub Personal Access Token (PAT)
+
 Install Docker
 Install KinD - https://kind.sigs.k8s.io/docs/user/quick-start/
 
@@ -384,9 +401,33 @@ flux bootstrap github \
   --personal=true \
   --private=false
 
-# Microservice Manifests
+# Verify the Installation:
+   flux check --pre
+
+# Setting Up FluxCD to Deploy the Application
+    
+    # Microservice Manifests
+    # Create a Kustomization File
+    # Link the Application Directory to FluxCD
+
 
 # Define Flux Kustomization
+
+# Verify FluxCD Reconciliation
+  Trigger Reconciliation:
+  flux reconcile kustomization flux-system -n flux-system
+
+  Check Logs:
+  kubectl logs -n flux-system deploy/kustomize-controller
+
+  Check Kustomization Status:
+  flux get kustomizations -n flux-system
+
+  Check that the app was created:
+  kubectl get all
+
+
+
 
 # Flux Sync
 
