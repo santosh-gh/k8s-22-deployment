@@ -267,6 +267,7 @@
 # Create a KinD cluster
 
 - This creates a single-node Kubernetes cluster inside a Docker container.
+
   kind create cluster --name demo-cluster 
 
   kind create cluster --name demo-cluster  --config=./cluster-config/config
