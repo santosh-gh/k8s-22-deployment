@@ -212,113 +212,12 @@
 
 # Tetechnology Stack
    
-    minikube
+    KinD
     docker desktop
     docker hub
     git hub
     kubectl
-    Argo CD   
-
-# Step 1: Start Minikube
-
-    First, start Minikube. 
-
-    minikube start    
-
-# Step 2: Create a Namespace for Argo CD
-
-    Create a separate namespace for Argo CD.
-
-    kubectl create namespace argocd
-    
-# Step 3: Install Argo CD
-    
-    Install Argo CD
-
-    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-    kubectl get all -n argocd
-
-# Step 4: Expose the Argo CD Server
-
-    To access the Argo CD web interface, expose the Argo CD server using the kubectl port-forward command:
-
-    kubectl port-forward svc/argocd-server -n argocd 8080:443
-
-    This command forwards the port 8080 on the local machine to port 443 of the Argo CD server.
-
-# Step 5: Log in to Argo CD
-
-    Browse to https://localhost:8080
-
-    Retrieve the password using the following command:
-
-    kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d; echo
-
-    The output will be the name of the Argo CD server pod. Use this name as the password. The default username is admin.
-
-# Step 6: Connect a Git Repository
-
-    Connect a Git repository to Argo CD. This repository should contain the Kubernetes manifests for the applications you want to deploy.
-
-    In the Argo CD web interface, Select Setting, Repository, Connect Repository
-
-# Cretae Argo CD app
-    
-    - Manual (Argo CD Dash Board)
-      Fill in the details like Application Name, Project, Sync Policy, and the Git repository URL.
-      Specify the path within the repository where the manifests are stored.
-      Choose the destination cluster and namespace.
-      Click on Create to create the application.
-
-    - Manifest (CRD - Application)
-
-      kubectl apply -f ./argocd/applications/single-manifests.yaml -n argocd
-      kubectl apply -f ./argocd/applications/single-helmchart.yaml -n argocd
-      kubectl apply -f ./argocd/applications/kustomize-manifests.yaml -n argocd
-      kubectl apply -f ./argocd/applications/helm-kustomize.yaml -n argocd
-      kubectl apply -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
-
-      # App of apps (deploy multiple services/apps using a root/parent argo CD manifest)
-      kubectl apply -f ./apps/app-of-apps.yaml -n argocd
-      kubectl apply -f ./apps-helm/app-of-apps.yaml -n argocd
-      kubectl apply -f ./apps-kustomize-manifests-prod/app-of-apps.yaml -n argocd      
-
-
-      # Delete the services/apps
-      kubectl delete -f ./argocd/applications/single-manifests.yaml -n argocd
-      kubectl delete -f ./argocd/applications/single-helmchart.yaml -n argocd
-      kubectl delete -f ./argocd/applications/kustomize-manifests.yaml -n argocd
-      kubectl delete -f ./argocd/applications/helm-kustomize.yaml -n argocd
-      kubectl delete -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
-
-      kubectl delete -f ./apps/app-of-apps.yaml -n argocd
-      kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd  
-      kubectl delete -f ./apps-kustomize-manifests-prod/app-of-apps.yaml -n argocd    
-
-    - Manifest (CRD - ApplicationSet)
-
-      kubectl apply -f ./appsets/single-manifests-appset.yaml
-      kubectl apply -f ./appsets/multi-manifests-appset.yaml
-
-      # Delete the services/apps
-      kubectl delete -f ./appsets/single-manifests-appset.yaml
-      kubectl delete -f ./appsets/multi-manifests-appset.yaml
-
-# Step 7: Sync the Application
-
-    After creating the application, you will see it listed on the dashboard. 
-
-# minikube cluster
-
-  alias k=kubectl
-
-  k create ns single-manifests 
-  k create ns multi-manifests
-  k create ns single-helmchart
-  k create ns multi-helmchart
-  k create ns kustomize-manifests
-
+    Flux CD   
 
 # Docker Build and Push to Docker Hub
 
@@ -336,61 +235,6 @@
     docker build -t store-front ./app/store-front 
     docker tag store-front:latest e880613/store-front:v1
     docker push e880613/store-front:v1 
-
-
-kubectl apply -f ./appsets/single-manifests-appset.yaml
-kubectl delete -f ./appsets/single-manifests-appset.yaml
-
-kubectl apply -f ./appsets/multi-manifests-appset.yaml
-kubectl delete -f ./appsets/multi-manifests-appset.yaml
-
-kubectl apply -f ./appsets/multi-env-multi-manifests-appset.yaml
-kubectl delete -f ./appsets/multi-env-multi-manifests-appset.yaml
-
-
-kubectl apply -f ./appsets/appset.yaml
-kubectl delete -f ./appsets/appset.yaml
-
-kubectl delete -f ./appsets/multi-env-multi-manifests-appset.yaml
-
-
-kubectl describe applicationsets.argoproj.io -n argocd matrix-namespaces-example
-
-
-argocd appset get-items -f ./appsets/multi-manifests-appset.yaml
-
-argocd appset template -f ./appsets/multi-manifests-appset.yaml
-
-kubectl apply -f ./appsets/multi-manifests-appset.yaml --dry-run=client -o yaml
-
-
-argocd appset get ./appsets/appset.yaml -o yaml
-argocd appset get ./appsets/multi-manifests-appset.yaml
-
-kubectl apply -f ./appsets/appset.yaml --dry-run=client -o yaml
-
-argocd login localhost:8080 --username admin --password lA2zNg2gO0JwB693 --insecure
-
-
-kubectl apply -f ./appsets/test.yaml
-kubectl apply -f ./appsets/test.yaml --dry-run=client -o yaml
-
-
-
-Core Components of FluxCD
-Before we dive into the hands-on part, let's briefly discuss the core components of FluxCD:
-
-Flux is the primary operator (control plane), continuously monitoring the Git repository and applying changes to the Kubernetes cluster.
-
-The Helm Controller is a component of FluxCD that allows you to manage Helm charts in a GitOps fashion.
-
-The Kustomize Controller supports managing Kubernetes manifests using Kustomize, enabling you to customize your deployments.
-
-The Notification Controller handles notifications and alerts for your deployments.
-
-The Source Controller monitors the source of the Kubernetes manifests (Git, Helm repositories, etc.) and makes them available for the other controllers.
-
-Creating a GitHub Personal Access Token (PAT)
 
 
 # Prerequisites
@@ -439,9 +283,9 @@ Creating a GitHub Personal Access Token (PAT)
 # Create a KinD cluster
 
 - This creates a single-node Kubernetes cluster inside a Docker container.
-  kind create cluster --name flux-demo 
+  kind create cluster --name demo-cluster 
 
-  kind create cluster --name flux-demo  --config=./cluster-config/config
+  kind create cluster --name demo-cluster  --config=./cluster-config/config
 
   docker ps
 
@@ -449,8 +293,7 @@ Creating a GitHub Personal Access Token (PAT)
 
   kubectl cluster-info
 
-  kubectl cluster-info --context kind-flux-demo
-
+  kubectl cluster-info --context kind-demo-cluster
 
 # Install Flux in Cluster
 
@@ -458,6 +301,8 @@ Creating a GitHub Personal Access Token (PAT)
   gh repo create <repo-name> --public 
 
 # Bootstrap Flux in the Cluster
+
+  Creating a GitHub Personal Access Token (PAT)
 
   export GITHUB_USER='santosh-gh'
   export GITHUB_REPO='k8s-22-deployment'
@@ -467,7 +312,7 @@ Creating a GitHub Personal Access Token (PAT)
     --owner=$GITHUB_USER \
     --repository=$GITHUB_REPO \
     --branch=main \
-    --path=clusters/flux-demo \
+    --path=clusters/demo-cluster \
     --personal=true \
     --private=false
 
@@ -475,11 +320,9 @@ Creating a GitHub Personal Access Token (PAT)
 
     Install the Flux components in Kubernetes cluster.
 
-    Configure Flux to reconcile manifests underclusters/flux-demo/
-
+    Configure Flux to reconcile manifests underclusters/demo-cluster/
 
     k get all -n flux-system
-
 
 # Setting Up FluxCD to Deploy the Application
     
@@ -487,7 +330,7 @@ Creating a GitHub Personal Access Token (PAT)
     # Create a Kustomization File
     # Link the Application Directory to FluxCD
 
-# Define Flux Kustomization
+# Commit and Push to Repository
 
 # Verify FluxCD Reconciliation
   Trigger Reconciliation:
@@ -498,6 +341,8 @@ Creating a GitHub Personal Access Token (PAT)
 
   Check Kustomization Status:
   flux get kustomizations -n flux-system
+
+  flux get kustomizations --watch
 
   flux get sources git
   flux get kustomizations
@@ -513,9 +358,10 @@ Creating a GitHub Personal Access Token (PAT)
   flux get kustomizations
 
 
-# Verify Deployment
+# Uninstall Flux
+
+# Delete Cluster
 
 kind delete cluster --name demo-cluster
-kind delete cluster --name flux-demo
 
 
