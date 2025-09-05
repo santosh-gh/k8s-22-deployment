@@ -241,13 +241,17 @@
 
   Install Docker
 
-  Install KinD - https://kind.sigs.k8s.io/docs/user/quick-start/
-
-    kind --version
+  GitHub CLI
 
   Install kubectl
 
-  Install Flux CLI
+# Install KinD 
+  
+  https://kind.sigs.k8s.io/docs/user/quick-start/
+
+  kind --version 
+
+# Install Flux CLI
 
     Windows:
     choco install flux
@@ -259,26 +263,6 @@
     curl -s https://fluxcd.io/install.sh | sudo bash
 
     flux --version
-
-  GitHub repo 
-
-# FluxCD Components
-
-  Flux - the primary operator (control plane), continuously monitoring the Git repository 
-          and applying changes to the Kubernetes cluster.
-
-  Kustomize Controller - supports managing Kubernetes manifests using Kustomize,
-                         also enabling customize the deployments.
-
-  Source Controller - monitors the source of the Kubernetes manifests (Git, Helm repositories, etc.) 
-                      and makes them available for the other controllers.
-
-  Helm Controller - responsible for managing Helm artifacts.
-
-  Notification Controller - handles notifications and alerts for deployments
-
-# FluxCD Prerequisites Check
-  flux check --pre
 
 # Create a KinD cluster
 
@@ -295,9 +279,13 @@
 
   kubectl cluster-info --context kind-demo-cluster
 
+# FluxCD Prerequisites Check
+  flux check --pre
+
 # Install Flux in Cluster
 
 # GitHub
+  gh auth login
   gh repo create <repo-name> --public 
 
 # Bootstrap Flux in the Cluster
@@ -321,10 +309,27 @@
     Install the Flux components in Kubernetes cluster.
 
     Configure Flux to reconcile manifests underclusters/demo-cluster/
+    
+    
+  kubectl get pods -n flux-system
+  k get all -n flux-system
 
-    k get all -n flux-system
+# FluxCD Components
 
-# Setting Up FluxCD to Deploy the Application
+  Flux - the primary operator (control plane), continuously monitoring the Git repository 
+          and applying changes to the Kubernetes cluster.
+
+  Kustomize Controller - supports managing Kubernetes manifests using Kustomize,
+                         also enabling customize the deployments.
+
+  Source Controller - monitors the source of the Kubernetes manifests (Git, Helm repositories, etc.) 
+                      and makes them available for the other controllers.
+
+  Helm Controller - responsible for managing Helm artifacts.
+
+  Notification Controller - handles notifications and alerts for deployments
+
+ # Setting Up FluxCD to Deploy the Application
     
     # Microservice Manifests
     # Create a Kustomization File
@@ -356,7 +361,6 @@
 
   kubectl get kustomizations -n flux-system
   flux get kustomizations
-
 
 # Uninstall Flux
 
