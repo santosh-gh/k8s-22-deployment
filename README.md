@@ -389,9 +389,9 @@ kubectl cluster-info
 
 # Bootstrap Flux in the Cluster
 
-export GITHUB_USER=santosh-gh
+export GITHUB_USER='santosh-gh'
+export GITHUB_REPO='k8s-22-deployment'
 export GITHUB_TOKEN=<your-token>
-export GITHUB_REPO=<your-repo>
 
 flux bootstrap github \
   --owner=$GITHUB_USER \
